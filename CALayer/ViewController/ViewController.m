@@ -28,6 +28,7 @@
     
     // 邊框寬度
     self.demoView.layer.borderWidth = 1;
+    self.demoView.layer.borderColor = [UIColor redColor].CGColor;
     
     ///---------------------------------------------------------------------------------------
     /// 陰影
@@ -60,10 +61,57 @@
     gradient.frame = self.demoView.bounds;
     
     // 由上到下的漸層顏色
-    gradient.colors = @[(id)[UIColor redColor].CGColor, (id)[UIColor grayColor].CGColor];
+    gradient.colors = @[(id)[UIColor redColor].CGColor, (id)[UIColor clearColor].CGColor, (id)[UIColor clearColor].CGColor, (id)[UIColor grayColor].CGColor];
     
     // insertSublayer:(插入 Sublayer) atIndex:(插入 index 層)
     [self.demoView.layer insertSublayer:gradient atIndex:0];
+    
+    ///---------------------------------------------------------------------------------------
+    /// @name CAEmitterLayer (粒子動畫)
+    ///---------------------------------------------------------------------------------------
+    
+    CAEmitterLayer *sunshineEmitterLayer = [CAEmitterLayer layer];
+    // 發射位置
+    sunshineEmitterLayer.emitterPosition = CGPointMake(100, -30);
+    // 發射範圍
+    sunshineEmitterLayer.emitterSize = CGSizeMake(CGRectGetWidth(self.view.frame) * 2, 0);
+    // 發射模式
+    sunshineEmitterLayer.emitterMode = kCAEmitterLayerOutline;
+    // 粒子模式
+    sunshineEmitterLayer.emitterShape = kCAEmitterLayerLine;
+    
+    // 創建粒子
+    CAEmitterCell *emitterCell = [CAEmitterCell emitterCell];
+    // 粒子內容
+    emitterCell.contents = (__bridge id)([UIImage imageNamed:@"snow"].CGImage);
+    // 粒子縮放比例
+    emitterCell.scale = 0.02;
+    // 縮放範圍
+    emitterCell.scaleRange = 0.5;
+    // 每秒粒子產生數量
+    emitterCell.birthRate = 200;
+    // 粒子生命週期
+    emitterCell.lifetime = 80;
+    // 粒子透明度
+    emitterCell.alphaSpeed = -0.01;
+    // 粒子速度
+    emitterCell.velocity = 50;
+    emitterCell.velocityRange = 50;
+    // 設定角度
+    emitterCell.emissionRange = M_PI;
+    // 設定粒子學轉角度
+    emitterCell.spin = M_PI_4;
+    // 設定 layer 陰影
+    sunshineEmitterLayer.shadowOpacity = 1.0;
+    // 設定圓角
+    sunshineEmitterLayer.shadowRadius = 8;
+    // 設定偏移
+    sunshineEmitterLayer.shadowOffset = CGSizeMake(3, 3);
+    // 設定顏色
+    sunshineEmitterLayer.shadowColor = [UIColor whiteColor].CGColor;
+    // 設定 layer 的例子
+    sunshineEmitterLayer.emitterCells = @[emitterCell];
+    [self.view.layer addSublayer:sunshineEmitterLayer];
 }
 
 @end
